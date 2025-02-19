@@ -1,8 +1,16 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/react/',
-})
+  server: {
+    proxy: {
+      // Proxy requests starting with /graphql to your backend
+      '/graphql': {
+        target: 'https://ecommtest.wuaze.com',
+        changeOrigin: true,
+        secure: true, // use true if your backend has a valid SSL certificate
+      },
+    },
+  },
+});
