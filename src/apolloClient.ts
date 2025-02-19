@@ -2,8 +2,8 @@ import { ApolloClient, InMemoryCache, from, HttpLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 
 const httpLink = new HttpLink({
-  uri: 'https://ecommtest.wuaze.com/graphql',
-  credentials: 'same-origin', // Changed from 'include' to 'same-origin'
+  uri: 'https://ecommtest.wuaze.com/cors.php',  // Point to cors.php instead of /graphql
+  credentials: 'same-origin',
   headers: {
     'Content-Type': 'application/json'
   }
@@ -11,12 +11,10 @@ const httpLink = new HttpLink({
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    graphQLErrors.forEach(({ message }) =>
-      console.log(`[GraphQL error]: Message: ${message}`)
-    );
+    console.log('GraphQL Errors:', graphQLErrors);
   }
   if (networkError) {
-    console.log(`[Network error]: ${networkError}`);
+    console.log('Network Error:', networkError);
   }
 });
 
