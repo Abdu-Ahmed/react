@@ -1,31 +1,36 @@
 import { ApolloClient, InMemoryCache, from, HttpLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 
-const backendURI = 'https://ecommtest.wuaze.com/graphql';
-
 const httpLink = new HttpLink({
-  uri: backendURI,
-  credentials: 'include',
+  uri: 'https://ecommtest.wuaze.com/graphql',
+  credentials: 'same-origin', // Changed from 'include' to 'same-origin'
   headers: {
-    'Content-Type': 'application/json',
-  },
+    'Content-Type': 'application/json'
+  }
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    graphQLErrors.forEach(({ message, locations, path }) =>
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      )
+    graphQLErrors.forEach(({ message }) =>
+      console.log(`[GraphQL error]: Message: ${message}`)
     );
   }
-  if (networkError) console.log(`[Network error]: ${networkError}`);
+  if (networkError) {
+    console.log(`[Network error]: ${networkError}`);
+  }
 });
 
 const client = new ApolloClient({
   link: from([errorLink, httpLink]),
   cache: new InMemoryCache(),
-  connectToDevTools: true,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'no-cache'
+    },
+    query: {
+      fetchPolicy: 'no-cache'
+    }
+  }
 });
 
 export default client;
