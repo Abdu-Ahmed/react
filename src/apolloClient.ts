@@ -16,3 +16,5 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: from([errorLink]),
 });
+
+export default client;
