@@ -9,7 +9,7 @@ export default defineConfig({
       '/graphql': {
         target: 'https://ecommtest.wuaze.com',
         changeOrigin: true,
-        secure: true, // use true if your backend has a valid SSL certificate
+        secure: false, // use true if your backend has a valid SSL certificate
       },
     },
   },
