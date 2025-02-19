@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache, from, HttpLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 
 const httpLink = new HttpLink({
-  uri: '/graphql',
+  uri: 'https://ecommtest.wuaze.com/graphql',
   credentials: 'include',
   headers: {
     'Content-Type': 'application/json',
