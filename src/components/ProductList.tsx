@@ -51,7 +51,18 @@ const toKebabCase = (str: string) => str.replace(/\s+/g, '-').toLowerCase();
  * It uses the GET_PRODUCTS GraphQL query to fetch data.
  */
 const ProductList: React.FC<ProductListProps> = ({ activeCategory, addToCart }) => {
-  const { loading, error, data } = useQuery<{ products: Product[] }>(GET_PRODUCTS);
+  console.log('ProductList rendering, activeCategory:', activeCategory);
+  
+  const { loading, error, data } = useQuery<{ products: Product[] }>(GET_PRODUCTS, {
+    onError: (error) => {
+      console.log('Query error:', error);
+    },
+    onCompleted: (data) => {
+      console.log('Query completed:', data);
+    }
+  });
+
+  console.log('Query state:', { loading, error, data });
 
   if (loading) return <p className="text-center py-10 text-xl">Loading...</p>;
   if (error) return <p className="text-center py-10 text-red-500">Error: {error.message}</p>;
