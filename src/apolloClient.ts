@@ -3,7 +3,7 @@ import { onError } from '@apollo/client/link/error';
 
 const httpLink = new HttpLink({
   uri: 'https://ecommtest.wuaze.com/graphql',
-  credentials: 'same-origin',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   }
