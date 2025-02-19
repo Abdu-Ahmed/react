@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 const client = new ApolloClient({
-  uri: 'ecommtest.wuaze.com/',
+  uri: 'ecommtest.wuaze.com/graphql',
   cache: new InMemoryCache(),
 });
 
