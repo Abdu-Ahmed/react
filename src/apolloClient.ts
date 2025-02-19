@@ -1,25 +1,15 @@
-import { ApolloClient, InMemoryCache, from, HttpLink } from '@apollo/client';
-import { onError } from '@apollo/client/link/error';
+import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
 
 const httpLink = new HttpLink({
   uri: 'https://ecommtest.wuaze.com/graphql',
-  credentials: 'include', // Must use include for CORS
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   }
 });
 
-// Add explicit content-type header in errorLink
-const errorLink = onError(({ operation }) => {
-  operation.setContext({
-    headers: {
-      'content-type': 'application/json' // Lowercase
-    }
-  });
-});
-
 const client = new ApolloClient({
-  link: from([errorLink, httpLink]),
+  link: httpLink, // Remove error link completely
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {
