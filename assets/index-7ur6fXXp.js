@@ -107,6 +107,28 @@ this in the docs: http://dev.apollodata.com/core/fragments.html#unique-names`):h
     products {
       id
       name
+      inStock
+      gallery
+      description
+      category
+      brand
+      attributes {
+        id
+        name
+        type
+        items {
+          id
+          displayValue
+          value
+        }
+      }
+      prices {
+        amount
+        currency {
+          label
+          symbol
+        }
+      }
     }
   }
 `,EO=()=>{const{loading:i,error:n,data:r}=lO(bO);return i?ht.jsx("p",{children:"Loading..."}):n?ht.jsxs("p",{children:["Error: ",n.message]}):ht.jsxs("div",{children:[ht.jsx("h2",{children:"Products"}),ht.jsx("pre",{children:JSON.stringify(r,null,2)})]})},SO=()=>ht.jsx(Lm,{client:Ym,children:ht.jsxs("div",{children:[ht.jsx("h1",{children:"GraphQL Test"}),ht.jsx(EO,{})]})});class _O extends gy.Component{constructor(n){super(n),this.state={hasError:!1,error:null}}static getDerivedStateFromError(n){return{hasError:!0,error:n}}componentDidCatch(n,r){console.error("Uncaught error:",n,r)}render(){var n;return this.state.hasError?ht.jsxs("div",{className:"p-4 m-4 border border-red-500 text-red-500",children:[ht.jsx("h1",{children:"Something went wrong."}),ht.jsx("p",{children:(n=this.state.error)==null?void 0:n.message})]}):this.props.children}}Db.createRoot(document.getElementById("root")).render(ht.jsx(gy.StrictMode,{children:ht.jsx(Lm,{client:Ym,children:ht.jsx(_O,{children:ht.jsx(SO,{})})})}))});export default OO();
