@@ -3,21 +3,19 @@ import { onError } from '@apollo/client/link/error';
 
 const httpLink = new HttpLink({
   uri: 'https://ecommtest.wuaze.com/graphql',
-  credentials: 'include',
+  credentials: 'include', // Must use include for CORS
   headers: {
     'Content-Type': 'application/json'
   }
 });
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) {
-    graphQLErrors.forEach(({ message }) =>
-      console.log(`[GraphQL error]: Message: ${message}`)
-    );
-  }
-  if (networkError) {
-    console.log(`[Network error]: ${networkError}`);
-  }
+// Add explicit content-type header in errorLink
+const errorLink = onError(({ operation }) => {
+  operation.setContext({
+    headers: {
+      'content-type': 'application/json' // Lowercase
+    }
+  });
 });
 
 const client = new ApolloClient({
