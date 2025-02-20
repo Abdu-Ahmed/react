@@ -9,7 +9,7 @@ const httpLink = new HttpLink({
 });
 
 const client = new ApolloClient({
-  link: httpLink, // Remove error link completely
+  link: httpLink,
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {
