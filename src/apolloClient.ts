@@ -3,7 +3,7 @@ import { onError } from '@apollo/client/link/error';
 
 const backendURI = 
   process.env.NODE_ENV === 'production'
-    ? 'https://http://bckndapeye.hstn.me//graphql'
+    ? 'http://bckndapeye.hstn.me/graphql'
     : '/graphql';  // use the proxy in development
 
 const httpLink = new HttpLink({
