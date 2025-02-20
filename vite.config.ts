@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/graphql': {
-        target: 'https://ecommtest.wuaze.com',
+        target: 'https://http://bckndapeye.hstn.me',
         changeOrigin: true,
         secure: false
       }
