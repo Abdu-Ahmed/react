@@ -1,14 +1,14 @@
 import { ApolloClient, InMemoryCache, from, HttpLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 
-const backendURI =
+const backendURI = 
   process.env.NODE_ENV === 'production'
     ? 'https://ecommtest.wuaze.com/graphql'
-    : '/graphql'; // use the proxy in development
+    : '/graphql';  // use the proxy in development
 
 const httpLink = new HttpLink({
   uri: backendURI,
-  credentials: 'include',
+  credentials: 'include',  // or change to 'same-origin' if you don't need credentials
   headers: {
     'Content-Type': 'application/json',
   },
@@ -16,17 +16,39 @@ const httpLink = new HttpLink({
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    graphQLErrors.forEach(({ message }) =>
-      console.log(`[GraphQL error]: Message: ${message}`)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.error(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
     );
   }
-  if (networkError) console.log(`[Network error]: ${networkError}`);
+  
+  if (networkError) {
+    console.error(`[Network error]: ${networkError}`);
+
+    // Safely check for HTTP status code
+    if ('response' in networkError && networkError.response?.status === 401) {
+      console.warn('Unauthorized access detected. Handling 401 error...');
+      // Handle unauthorized access (e.g., redirect to login, clear session, etc.)
+    }
+  }
 });
+
 
 const client = new ApolloClient({
   link: from([errorLink, httpLink]),
   cache: new InMemoryCache(),
-  connectToDevTools: true,
+  connectToDevTools: process.env.NODE_ENV === 'development',
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all',
+    },
+    query: {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all',
+    },
+  },
 });
 
 export default client;
