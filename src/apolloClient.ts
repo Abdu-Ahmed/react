@@ -1,9 +1,9 @@
 import { ApolloClient, InMemoryCache, from, HttpLink } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 
-const backendURI = 
+const backendURI =
   process.env.NODE_ENV === 'production'
-    ? 'https://bckndapeye.hstn.me/'
+    ? 'http://abduecommtst.atwebpages.com/'
     : '/graphql';  // use the proxy in development
 
 const httpLink = new HttpLink({
@@ -25,15 +25,14 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   
   if (networkError) {
     console.error(`[Network error]: ${networkError}`);
-
-    // Safely check for HTTP status code
+    
+    // Safely check for HTTP status code using the response property
     if ('response' in networkError && networkError.response?.status === 401) {
       console.warn('Unauthorized access detected. Handling 401 error...');
       // Handle unauthorized access (e.g., redirect to login, clear session, etc.)
     }
   }
 });
-
 
 const client = new ApolloClient({
   link: from([errorLink, httpLink]),
